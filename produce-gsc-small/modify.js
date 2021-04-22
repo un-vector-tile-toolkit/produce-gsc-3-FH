@@ -57,8 +57,8 @@ const flap = (f, defaultZ) => {
 const lut = {
 //osm
   landuse_naturalmedium0609_a: f => {
-    let lc_arr = [20, 30, 80]
-    if (!lc_arr.includes(f.properties.gridcode)) return null
+//    let lc_arr = [20, 30, 80]
+//    if (!lc_arr.includes(f.properties.gridcode)) return null
     f.tippecanoe = {
       layer: 'nature-s',
       minzoom: 5,
@@ -67,8 +67,8 @@ const lut = {
     return f
   },
   roads_major_0408_l: f => {
-    let rd_arr = [1, 3, 5, 7]
-    if (!rd_arr.includes(f.properties.z_order)) return null
+//    let rd_arr = [1, 3, 5, 7]
+//    if (!rd_arr.includes(f.properties.z_order)) return null
     f.tippecanoe = {
       layer: 'road-s',
       minzoom: 3,
@@ -177,9 +177,9 @@ const lut = {
     return f
   },
   unhq_popp: f => {
-    let popp_arr = [1, 2, 3]
-    if (!popp_arr.includes(f.properties.poptyp_code)) return null
-    if (f.properties.poptyp_code !== 3 || f.properties.scl_id_code !== 10) return null
+//    let popp_arr = [1, 2, 3]
+//    if (!popp_arr.includes(f.properties.poptyp_code)) return null
+//    if (f.properties.poptyp_code !== 3 || f.properties.scl_id_code !== 10) return null
     f.tippecanoe = {
       layer: 'un_popp',
       minzoom: 3,
