@@ -1,5 +1,5 @@
 {
-un-s{
+un-s:{
   Z: 0
   relations: [
    un_base::public::custom_planet_land_a_l08
@@ -32,7 +32,7 @@ un-s{
   0-0-0
   ]
 }
-osm-s{
+osm-s:{
   Z: 0
   relations: [
    sde_pg_3::vectortile::landuse_naturalmedium0609_a
