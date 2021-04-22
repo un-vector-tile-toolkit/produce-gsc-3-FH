@@ -11,3 +11,9 @@ vi produce-gsc-un-46/config/default.hjson //edit config info, e.g. host, dbUser,
 vi produce-gsc-osm-46/config/default.hjson //edit config info, e.g. host, dbUser, dbPassword, etc.
 ```
 
+## Possible workflow
+run "work_undata.sh" to create un sourced vector tiles (update frequency is irregular/ when needed.)  
+run "work_every.sh" everyday up create/update priority area (daily update).  
+run "work_day0X" once a week to create/update othere areas (weekly update).     
+
+Please be advised that "work_every" and "work_day0x" newly create (update) the data from osm only, but they will be merged with un source vectortile using tile-join.  
