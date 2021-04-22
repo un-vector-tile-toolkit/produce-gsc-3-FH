@@ -26,10 +26,30 @@ const defaultDate = new Date(config.get('defaultDate'))
 const mbtilesDir = config.get('un-l.mbtilesDir')
 const logDir = config.get('logDir')
 const propertyBlacklist = config.get('un-l.propertyBlacklist')
-const conversionTilelist = config.get('conversionTilelist')
+
 const spinnerString = config.get('spinnerString')
 const fetchSize = config.get('fetchSize')
 const tippecanoePath = config.get('tippecanoePath')
+
+//make a list
+//const conversionTilelist = config.get('conversionTilelist')
+const conversionTilelist01 = config.get('day01Tilelist')
+const conversionTilelist02 = config.get('day02Tilelist')
+const conversionTilelist03 = config.get('day03Tilelist')
+const conversionTilelist04 = config.get('day04Tilelist')
+const conversionTilelist05 = config.get('day05Tilelist')
+const conversionTilelist06 = config.get('day06Tilelist')
+const conversionTilelist07 = config.get('day07Tilelist')
+
+let conversionTilelist = config.get('everydayTilelist')
+conversionTilelist = conversionTilelist.concat(conversionTilelist01)
+conversionTilelist = conversionTilelist.concat(conversionTilelist02)
+conversionTilelist = conversionTilelist.concat(conversionTilelist03)
+conversionTilelist = conversionTilelist.concat(conversionTilelist04)
+conversionTilelist = conversionTilelist.concat(conversionTilelist05)
+conversionTilelist = conversionTilelist.concat(conversionTilelist06)
+conversionTilelist = conversionTilelist.concat(conversionTilelist07)
+
 
 // global configurations
 Spinner.setDefaultSpinnerString(spinnerString)

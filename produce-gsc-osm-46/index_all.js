@@ -14,17 +14,18 @@ const DailyRotateFile = require('winston-daily-rotate-file')
 const modify = require('./modify.js')
 
 // config constants
-const host = config.get('host')
+const host = config.get('osm-l.host')
+const port = config.get('osm-l.port') 
 const wtpsThreshold = config.get('wtpsThreshold')
 const monitorPeriod = config.get('monitorPeriod')
-const Z = config.get('Z')
-const dbUser = config.get('dbUser')
-const dbPassword = config.get('dbPassword')
-const relations = config.get('relations')
+const Z = config.get('osm-l.Z')
+const dbUser = config.get('osm-l.dbUser')
+const dbPassword = config.get('osm-l.dbPassword')
+const relations = config.get('osm-l.relations')
 const defaultDate = new Date(config.get('defaultDate'))
-const mbtilesDir = config.get('mbtilesDir')
+const mbtilesDir = config.get('osm-l.mbtilesDir')
 const logDir = config.get('logDir')
-const propertyBlacklist = config.get('propertyBlacklist')
+const propertyBlacklist = config.get('osm-l.propertyBlacklist')
 let conversionTilelist = config.get('everydayTilelist')
 let conversionTilelist01 = config.get('day01Tilelist') 
 let conversionTilelist02 = config.get('day02Tilelist') 
@@ -36,8 +37,7 @@ let conversionTilelist07 = config.get('day07Tilelist')
 const spinnerString = config.get('spinnerString')
 const fetchSize = config.get('fetchSize')
 const tippecanoePath = config.get('tippecanoePath')
-const seaTilelist = config.get('seaTilelist')  //edited 2021-01-24
-const skipSea = config.get('skipSea')  //edited 2021-01-24
+
 
 // global configurations
 Spinner.setDefaultSpinnerString(spinnerString)
