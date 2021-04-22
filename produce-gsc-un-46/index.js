@@ -190,7 +190,7 @@ WITH
 SELECT 
   ${cols.toString()}
 FROM ${schema}.${table}
-JOIN envelope ${schema}.ON ${table}.geom && envelope.geom
+JOIN envelope ON ${schema}.${table}.geom && envelope.geom
 ` 
       cols = await client.query(sql)
       try {
