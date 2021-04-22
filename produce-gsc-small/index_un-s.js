@@ -18,38 +18,18 @@ const host = config.get('un-l.host')
 const port = config.get('un-l.port') 
 const wtpsThreshold = config.get('wtpsThreshold')
 const monitorPeriod = config.get('monitorPeriod')
-const Z = config.get('un-l.Z')
+const Z = config.get('un-s.Z')
 const dbUser = config.get('un-l.dbUser')
 const dbPassword = config.get('un-l.dbPassword')
-const relations = config.get('un-l.relations')
+const relations = config.get('un-s.relations')
 const defaultDate = new Date(config.get('defaultDate'))
-const mbtilesDir = config.get('un-l.mbtilesDir')
+const mbtilesDir = config.get('un-s.mbtilesDir')
 const logDir = config.get('logDir')
-const propertyBlacklist = config.get('un-l.propertyBlacklist')
-
+const propertyBlacklist = config.get('un-s.propertyBlacklist')
+const conversionTilelist = config.get('un-s.conversionTilelist')
 const spinnerString = config.get('spinnerString')
 const fetchSize = config.get('fetchSize')
 const tippecanoePath = config.get('tippecanoePath')
-
-//make a list
-//const conversionTilelist = config.get('conversionTilelist')
-const conversionTilelist01 = config.get('day01Tilelist')
-const conversionTilelist02 = config.get('day02Tilelist')
-const conversionTilelist03 = config.get('day03Tilelist')
-const conversionTilelist04 = config.get('day04Tilelist')
-const conversionTilelist05 = config.get('day05Tilelist')
-const conversionTilelist06 = config.get('day06Tilelist')
-const conversionTilelist07 = config.get('day07Tilelist')
-
-let conversionTilelist = config.get('everydayTilelist')
-conversionTilelist = conversionTilelist.concat(conversionTilelist01)
-conversionTilelist = conversionTilelist.concat(conversionTilelist02)
-conversionTilelist = conversionTilelist.concat(conversionTilelist03)
-conversionTilelist = conversionTilelist.concat(conversionTilelist04)
-conversionTilelist = conversionTilelist.concat(conversionTilelist05)
-conversionTilelist = conversionTilelist.concat(conversionTilelist06)
-conversionTilelist = conversionTilelist.concat(conversionTilelist07)
-
 
 // global configurations
 Spinner.setDefaultSpinnerString(spinnerString)
@@ -58,7 +38,7 @@ winston.configure({
   format: winston.format.simple(),
   transports: [ 
     new DailyRotateFile({
-      filename: `${logDir}/produce-un46-%DATE%.log`,
+      filename: `${logDir}/produce-un-small-%DATE%.log`,
       datePattern: 'YYYY-MM-DD',
       maxSize: '20m',
       maxFiles: '14d'
@@ -190,7 +170,7 @@ WITH
 SELECT 
   ${cols.toString()}
 FROM ${schema}.${table}
-JOIN envelope ${schema}.ON ${table}.geom && envelope.geom
+JOIN envelope ON ${schema}.${table}.geom && envelope.geom
 ` 
       cols = await client.query(sql)
       try {
@@ -232,8 +212,8 @@ const queue = new Queue(async (t, cb) => {
     '--simplification=2',
     '--drop-rate=1',
     `--minimum-zoom=${Z}`,
-    '--maximum-zoom=15',
-    '--base-zoom=15',
+    '--maximum-zoom=5',
+    '--base-zoom=5',
     '--hilbert',
     `--clip-bounding-box=${bbox.join(',')}`,
     `--output=${tmpPath}`
@@ -268,7 +248,7 @@ const queue = new Queue(async (t, cb) => {
   }
   tippecanoe.stdin.end()
 }, { 
-  concurrent: config.get('un-l.concurrent'), 
+  concurrent: config.get('concurrentS'), 
   maxRetries: config.get('maxRetries'),
   retryDelay: config.get('retryDelay') 
 })
@@ -295,7 +275,7 @@ const shutdown = () => {
 }
 
 const main = async () => {
-  winston.info(`${iso()}: gsc-un46 production started.`)
+  winston.info(`${iso()}: un-s production started.`)
   await getScores()
   queueTasks()
   queue.on('drain', () => {

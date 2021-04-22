@@ -1,4 +1,58 @@
 {
+un-s{
+  Z: 0
+  relations: [
+   un_base::public::custom_planet_land_a_l08
+   un_base::public::unhq_bndl
+   un_base::public::unhq_bndl05
+   un_base::public::unhq_bndl25
+   un_base::public::custom_ne_rivers_lakecentrelines
+   un_base::public::unhq_phyp
+   un_base::public::unhq_bnda_cty_anno_l03
+   un_base::public::unhq_bnda_cty_anno_l04
+   un_base::public::unhq_bnda_cty_anno_l05
+   un_base::public::unhq_bnda_cty_anno_l06
+   un_base::public::unhq_cm02_phyp_anno_l04
+   un_base::public::unhq_cm02_phyp_anno_l06
+   un_base::public::un_glc30_global_lc_ss
+   un_base::public::unhq_popp
+   ]
+  mbtilesDir: produce-gsc-small/un-s-tile
+  propertyBlacklist: [
+    description
+    fid
+    fid_1
+    globalid
+    id
+    objectid_1
+    osm_id
+    pseudoarea
+  ]
+  conversionTilelist: [
+  0-0-0
+  ]
+}
+osm-s{
+  Z: 0
+  relations: [
+   sde_pg_3::vectortile::landuse_naturalmedium0609_a
+   sde_pg_3::vectortile::roads_major_0408_l 
+   ]
+  mbtilesDir: produce-gsc-small/osm-s-tile
+  propertyBlacklist: [
+    description
+    fid
+    fid_1
+    globalid
+    id
+    objectid_1
+    osm_id
+    pseudoarea
+  ]
+  conversionTilelist: [
+  0-0-0
+  ]
+}
 un-l:{
   host: localhost
   Z: 6
@@ -7,32 +61,32 @@ un-l:{
   dbUser: postgress
   dbPassword: ABCDEFG
   relations: [
-    un_base::custom_ne_rivers_lakecentrelines
-    un_base::custom_planet_land_a
-    un_base::custom_planet_land_a_l08
-    un_base::custom_unmap_0_bnda_a1_p
-    un_base::custom_unmap_0_bnda_a2_p
-    un_base::custom_unmap_0_bndl
-    un_base::un_global_places
-    un_base::un_global_pois
-    un_base::un_minusca_pois
-    un_base::un_mission_lc_ls
-    un_base::un_glc30_global_lc_ms
-    un_base::un_unmik_bnda_a_p
-    un_base::un_unmik_bnda_a3_p
-    un_base::un_unmik_bndl
-    un_base::un_unvmc_igac_bnda_a1_departments_p
-    un_base::un_unvmc_igac_bnda_a2_municipalities_p
-    un_base::un_unvmc_igac_bnda_a3_rural_units_p
-    un_base::un_unvmc_igac_bndl
-    un_base::unhq_bnda_a1_p
-    un_base::unhq_bnda_a2_p
-    un_base::unhq_bnda_cty_anno_l06
-    un_base::unhq_bnda05_cty
-    un_base::unhq_bndl
-    un_base::unhq_phyp
-    un_base::unhq_popp
-    un_base::unhq_cm02_phyp_anno_l06
+    un_base::public::custom_ne_rivers_lakecentrelines
+    un_base::public::custom_planet_land_a
+    un_base::public::custom_planet_land_a_l08
+    un_base::public::custom_unmap_0_bnda_a1_p
+    un_base::public::custom_unmap_0_bnda_a2_p
+    un_base::public::custom_unmap_0_bndl
+    un_base::public::un_global_places
+    un_base::public::un_global_pois
+    un_base::public::un_minusca_pois
+    un_base::public::un_mission_lc_ls
+    un_base::public::un_glc30_global_lc_ms
+    un_base::public::un_unmik_bnda_a_p
+    un_base::public::un_unmik_bnda_a3_p
+    un_base::public::un_unmik_bndl
+    un_base::public::un_unvmc_igac_bnda_a1_departments_p
+    un_base::public::un_unvmc_igac_bnda_a2_municipalities_p
+    un_base::public::un_unvmc_igac_bnda_a3_rural_units_p
+    un_base::public::un_unvmc_igac_bndl
+    un_base::public::unhq_bnda_a1_p
+    un_base::public::unhq_bnda_a2_p
+    un_base::public::unhq_bnda_cty_anno_l06
+    un_base::public::unhq_bnda05_cty
+    un_base::public::unhq_bndl
+    un_base::public::unhq_phyp
+    un_base::public::unhq_popp
+    un_base::public::unhq_cm02_phyp_anno_l06
    ]
   mbtilesDir: produce-gsc-un-46/mbtiles/un_tile
   propertyBlacklist: [
@@ -111,6 +165,7 @@ sde_pg_3::vectortile::buildings_a
 }
   wtpsThreshold: 50
   monitorPeriod: 10
+  concurrentS: 1
   maxRetries: 5
   retryDelay: 5000
   logDir: log

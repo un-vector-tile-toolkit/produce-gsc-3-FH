@@ -14,42 +14,22 @@ const DailyRotateFile = require('winston-daily-rotate-file')
 const modify = require('./modify.js')
 
 // config constants
-const host = config.get('un-l.host')
-const port = config.get('un-l.port') 
+const host = config.get('osm-l.host')
+const port = config.get('osm-l.port') 
 const wtpsThreshold = config.get('wtpsThreshold')
 const monitorPeriod = config.get('monitorPeriod')
-const Z = config.get('un-l.Z')
-const dbUser = config.get('un-l.dbUser')
-const dbPassword = config.get('un-l.dbPassword')
-const relations = config.get('un-l.relations')
+const Z = config.get('osm-s.Z')
+const dbUser = config.get('osm-l.dbUser')
+const dbPassword = config.get('osm-l.dbPassword')
+const relations = config.get('osm-s.relations')
 const defaultDate = new Date(config.get('defaultDate'))
-const mbtilesDir = config.get('un-l.mbtilesDir')
+const mbtilesDir = config.get('osm-s.mbtilesDir') //edited 2020-01-22
 const logDir = config.get('logDir')
-const propertyBlacklist = config.get('un-l.propertyBlacklist')
-
+const propertyBlacklist = config.get('osm-s.propertyBlacklist')
+const conversionTilelist = config.get('osm-s.conversionTilelist') //edited 2021-01-22
 const spinnerString = config.get('spinnerString')
 const fetchSize = config.get('fetchSize')
 const tippecanoePath = config.get('tippecanoePath')
-
-//make a list
-//const conversionTilelist = config.get('conversionTilelist')
-const conversionTilelist01 = config.get('day01Tilelist')
-const conversionTilelist02 = config.get('day02Tilelist')
-const conversionTilelist03 = config.get('day03Tilelist')
-const conversionTilelist04 = config.get('day04Tilelist')
-const conversionTilelist05 = config.get('day05Tilelist')
-const conversionTilelist06 = config.get('day06Tilelist')
-const conversionTilelist07 = config.get('day07Tilelist')
-
-let conversionTilelist = config.get('everydayTilelist')
-conversionTilelist = conversionTilelist.concat(conversionTilelist01)
-conversionTilelist = conversionTilelist.concat(conversionTilelist02)
-conversionTilelist = conversionTilelist.concat(conversionTilelist03)
-conversionTilelist = conversionTilelist.concat(conversionTilelist04)
-conversionTilelist = conversionTilelist.concat(conversionTilelist05)
-conversionTilelist = conversionTilelist.concat(conversionTilelist06)
-conversionTilelist = conversionTilelist.concat(conversionTilelist07)
-
 
 // global configurations
 Spinner.setDefaultSpinnerString(spinnerString)
@@ -58,7 +38,7 @@ winston.configure({
   format: winston.format.simple(),
   transports: [ 
     new DailyRotateFile({
-      filename: `${logDir}/produce-un46-%DATE%.log`,
+      filename: `${logDir}/produce-osm-small-%DATE%.log`,
       datePattern: 'YYYY-MM-DD',
       maxSize: '20m',
       maxFiles: '14d'
@@ -87,21 +67,21 @@ const getScores = async () => {
 
 //Replaced loop (based on the list)
     for (const moduleKey of conversionTilelist) {
-        const path = `${mbtilesDir}/${moduleKey}.mbtiles`
-        let mtime = defaultDate
-        let size = 0
-        if (fs.existsSync(path)) {
-          let stat = fs.statSync(path)
-          mtime = stat.mtime
-          size = stat.size
-        }
-        oldestDate = (oldestDate < mtime) ? oldestDate : mtime
-        modules[moduleKey] = {
-          mtime: mtime,
-          size: size,
-         score: 0
-       }
+      const path = `${mbtilesDir}/${moduleKey}.mbtiles`
+      let mtime = defaultDate
+      let size = 0
+      if (fs.existsSync(path)) {
+        let stat = fs.statSync(path)
+        mtime = stat.mtime
+        size = stat.size
       }
+      oldestDate = (oldestDate < mtime) ? oldestDate : mtime
+      modules[moduleKey] = {
+        mtime: mtime,
+        size: size,
+       score: 0
+      }
+    }
 
     resolve()
   })
@@ -176,7 +156,8 @@ const dumpAndModify = async (bbox, relation, downstream, moduleKey) => {
       if (err) throw err
       let sql = `
 SELECT column_name FROM information_schema.columns 
-  WHERE table_name='${table}' AND table_schema='${schema}' ORDER BY ordinal_position`
+ WHERE table_name='${table}' AND table_schema='${schema}' ORDER BY ordinal_position`
+
       let cols = await client.query(sql)
       cols = cols.rows.map(r => r.column_name).filter(r => r !== 'geom')
       cols = cols.filter(v => !propertyBlacklist.includes(v))
@@ -185,12 +166,12 @@ SELECT column_name FROM information_schema.columns
       await client.query(`BEGIN`)
       sql = `
 DECLARE cur CURSOR FOR 
-WITH
+WITH 
   envelope AS (SELECT ST_MakeEnvelope(${bbox.join(', ')}, 4326) AS geom)
 SELECT 
   ${cols.toString()}
 FROM ${schema}.${table}
-JOIN envelope ${schema}.ON ${table}.geom && envelope.geom
+JOIN envelope ON ${schema}.${table}.geom && envelope.geom
 ` 
       cols = await client.query(sql)
       try {
@@ -230,10 +211,9 @@ const queue = new Queue(async (t, cb) => {
     '--no-tile-size-limit',
     '--force',
     '--simplification=2',
-    '--drop-rate=1',
     `--minimum-zoom=${Z}`,
-    '--maximum-zoom=15',
-    '--base-zoom=15',
+    '--maximum-zoom=5',
+    '--base-zoom=5',
     '--hilbert',
     `--clip-bounding-box=${bbox.join(',')}`,
     `--output=${tmpPath}`
@@ -268,7 +248,7 @@ const queue = new Queue(async (t, cb) => {
   }
   tippecanoe.stdin.end()
 }, { 
-  concurrent: config.get('un-l.concurrent'), 
+  concurrent: config.get('concurrentS'), 
   maxRetries: config.get('maxRetries'),
   retryDelay: config.get('retryDelay') 
 })
@@ -276,8 +256,10 @@ const queue = new Queue(async (t, cb) => {
 const queueTasks = () => {
   let moduleKeys = Object.keys(modules)
   moduleKeys.sort((a, b) => modules[b].score - modules[a].score)
+
   for (let moduleKey of moduleKeys) {
-  //for (let moduleKey of ['6-37-31', '6-38-31', '6-37-32', '6-38-32']) { //// TEMP
+//for (let moduleKey of conversionTilelist) {
+//  for (let moduleKey of ['6-34-30','6-34-31','6-34-32','6-35-30','6-35-31','6-35-32','6-36-30','6-36-31','6-36-32','6-37-30','6-37-31','6-37-32','6-38-30','6-38-31','6-38-32']) { //// TEMP
     //if (modules[moduleKey].score > 0) {
       queue.push({
         moduleKey: moduleKey
@@ -290,12 +272,11 @@ const queueTasks = () => {
 const shutdown = () => {
   winston.info(`${iso()}: production system shutdown.`)
   console.log('** production system shutdown! **')
-//  sar.kill()
   process.exit(0)
 }
 
 const main = async () => {
-  winston.info(`${iso()}: gsc-un46 production started.`)
+  winston.info(`${iso()}: osm-s tile production started.`)
   await getScores()
   queueTasks()
   queue.on('drain', () => {
