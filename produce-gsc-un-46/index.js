@@ -14,18 +14,18 @@ const DailyRotateFile = require('winston-daily-rotate-file')
 const modify = require('./modify.js')
 
 // config constants
-const host = config.get('host')
-const port = config.get('port') 
+const host = config.get('un-l.host')
+const port = config.get('un-l.port') 
 const wtpsThreshold = config.get('wtpsThreshold')
 const monitorPeriod = config.get('monitorPeriod')
-const Z = config.get('Z')
-const dbUser = config.get('dbUser')
-const dbPassword = config.get('dbPassword')
-const relations = config.get('relations')
+const Z = config.get('un-l.Z')
+const dbUser = config.get('un-l.dbUser')
+const dbPassword = config.get('un-l.dbPassword')
+const relations = config.get('un-l.relations')
 const defaultDate = new Date(config.get('defaultDate'))
-const mbtilesDir = config.get('mbtilesDir')
+const mbtilesDir = config.get('un-l.mbtilesDir')
 const logDir = config.get('logDir')
-const propertyBlacklist = config.get('propertyBlacklist')
+const propertyBlacklist = config.get('un-l.propertyBlacklist')
 const conversionTilelist = config.get('conversionTilelist')
 const spinnerString = config.get('spinnerString')
 const fetchSize = config.get('fetchSize')
@@ -247,7 +247,7 @@ const queue = new Queue(async (t, cb) => {
   }
   tippecanoe.stdin.end()
 }, { 
-  concurrent: config.get('concurrent'), 
+  concurrent: config.get('un-l.concurrent'), 
   maxRetries: config.get('maxRetries'),
   retryDelay: config.get('retryDelay') 
 })

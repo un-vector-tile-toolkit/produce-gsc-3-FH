@@ -14,18 +14,18 @@ const DailyRotateFile = require('winston-daily-rotate-file')
 const modify = require('./modify.js')
 
 // config constants
-const host = config.get('host')
-const port = config.get('port') 
+const host = config.get('osm-l.host')
+const port = config.get('osm-l.port') 
 const wtpsThreshold = config.get('wtpsThreshold')
 const monitorPeriod = config.get('monitorPeriod')
-const Z = config.get('Z')
-const dbUser = config.get('dbUser')
-const dbPassword = config.get('dbPassword')
-const relations = config.get('relations')
+const Z = config.get('osm-l.Z')
+const dbUser = config.get('osm-l.dbUser')
+const dbPassword = config.get('osm-l.dbPassword')
+const relations = config.get('osm-l.relations')
 const defaultDate = new Date(config.get('defaultDate'))
-const mbtilesDir = config.get('mbtilesDir_day01') //edited 2020-02-12
+const mbtilesDir = config.get('osm-l.mbtilesDir_day01') //edited 2020-02-12
 const logDir = config.get('logDir')
-const propertyBlacklist = config.get('propertyBlacklist')
+const propertyBlacklist = config.get('osm-l.propertyBlacklist')
 let conversionTilelist = config.get('day01Tilelist') //edited 2021-02-12
 const spinnerString = config.get('spinnerString')
 const fetchSize = config.get('fetchSize')
@@ -247,7 +247,7 @@ const queue = new Queue(async (t, cb) => {
   }
   tippecanoe.stdin.end()
 }, { 
-  concurrent: config.get('concurrent'), 
+  concurrent: config.get('osm-l.concurrent'), 
   maxRetries: config.get('maxRetries'),
   retryDelay: config.get('retryDelay') 
 })
