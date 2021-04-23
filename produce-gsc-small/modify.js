@@ -64,15 +64,37 @@ const lut = {
       minzoom: 5,
       maxzoom: 5
     }
+    delete f.properties['id']
+    delete f.properties['osm_id']
+    delete f.properties['class']
+    delete f.properties['ungsc_ctry']
+    delete f.properties['ungsc_mission']
     return f
   },
   roads_major_0408_l: f => {
-//    let rd_arr = [1, 3, 5, 7]
-//    if (!rd_arr.includes(f.properties.z_order)) return null
     f.tippecanoe = {
       layer: 'road-s',
       minzoom: 3,
       maxzoom: 5
+    }
+    delete f.properties['id']
+    delete f.properties['osm_id']
+    delete f.properties['class']
+    delete f.properties['fclass']
+    delete f.properties['ref']
+    delete f.properties['bridge']
+    delete f.properties['tunnel']
+    delete f.properties['ford']
+    delete f.properties['oneway']
+    delete f.properties['access']
+    delete f.properties['surface']
+    delete f.properties['width']
+    delete f.properties['tracktype']
+    delete f.properties['ungsc_ctry']
+    delete f.properties['ungsc_mission']
+    let rd_arr = [1, 3, 5, 7]
+    if (!rd_arr.includes(f.properties.z_order)) {
+    delete f
     }
     return f
   },
