@@ -72,8 +72,6 @@ const lut = {
     return f
   },
   roads_major_0408_l: f => {
-    let rd_arr = [1, 3, 5, 7]
-    if (!rd_arr.includes(f.properties.z_order)) return null
     f.tippecanoe = {
       layer: 'road-s',
       minzoom: 3,
@@ -94,10 +92,10 @@ const lut = {
     delete f.properties['tracktype']
     delete f.properties['ungsc_ctry']
     delete f.properties['ungsc_mission']
-//    let rd_arr = [1, 3, 5, 7]
-//    if (!rd_arr.includes(f.properties.z_order)) {
-//    delete f
-//    }
+    let rd_arr = [1, 3, 5, 7]
+    if (!rd_arr.includes(f.properties.z_order)) {
+    delete f
+    }
     return f
   },
  // un1 Base
