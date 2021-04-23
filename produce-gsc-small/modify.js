@@ -1,4 +1,4 @@
-//modify for new small conversion
+//modify for new small conversion 0423
 const geojsonArea = require('@mapbox/geojson-area')
 
 const preProcess = (f) => {
@@ -105,6 +105,8 @@ const lut = {
       minzoom: 0,
       maxzoom: 5
     }
+    delete f.properties['objectid']
+    delete f.properties['fid_1']
     return f
   },
   un_glc30_global_lc_ss: f => {
@@ -122,6 +124,11 @@ const lut = {
       minzoom: 5,
       maxzoom: 5
     }
+    delete f.properties['objectid']
+  //no need admin 1 and 2 for ZL5 
+  if (f.properties.bdytyp === 'Administrative boundary 1' ||f.properties.bdytyp === 'Administrative boundary 2') {
+    delete f
+  }
     return f
   },
   unhq_bndl05: f => {
@@ -130,6 +137,11 @@ const lut = {
       minzoom: 3,
       maxzoom: 4
     }
+    delete f.properties['objectid']
+  //no need admin 1 and 2 for small scale
+  if (f.properties.bdytyp === 'Administrative boundary 1' || f.properties.bdytyp === 'Administrative boundary 2') {
+    delete f
+  }
     return f
   },
    unhq_bndl25: f => {
@@ -138,14 +150,29 @@ const lut = {
       minzoom: 0,
       maxzoom: 2
     }
+    delete f.properties['objectid']
+  //no need admin 1 and 2 for small scale
+  if (f.properties.bdytyp === 'Administrative boundary 1' || f.properties.bdytyp === 'Administrative boundary 2') {
+    delete f
+  }
     return f
   },
   custom_ne_rivers_lakecentrelines: f => {
     f.tippecanoe = {
       layer: 'un_water',
-      minzoom: 0,
-      maxzoom: 4
+      maxzoom: 5
     }
+  if (f.properties.scalerank == 1 || f.properties.scalerank == 2 || f.properties.scalerank == 3 || f.properties.scalerank == 4) {
+    f.tippecanoe.minzoom = 3
+  } else if (f.properties.scalerank == 5 || f.properties.scalerank == 6 || f.properties.scalerank == 7 ) {
+    f.tippecanoe.minzoom = 4
+  } else {
+    f.tippecanoe.minzoom = 5
+  }
+    delete f.properties['strokeweig']
+    delete f.properties['dissolve']
+    delete f.properties['note']
+    delete f.properties['mission']
     return f
   },
   unhq_bnda_cty_anno_l03: f => {
@@ -154,6 +181,14 @@ const lut = {
       minzoom: 1,
       maxzoom: 1
     }
+   //if we need to remove features with status 1
+   //if (f.properties.status == 1) {
+   //delete f
+   //} 
+    delete f.properties['zorder']
+    delete f.properties['annotationclassid']
+    delete f.properties['element']
+    delete f.properties['symbolid']
     return f
   },
   unhq_bnda_cty_anno_l04: f => {
@@ -162,6 +197,14 @@ const lut = {
       minzoom: 2,
       maxzoom: 2
     }
+   //if we need to remove features with status 1
+   //if (f.properties.status == 1) {
+   //delete f
+   //} 
+    delete f.properties['zorder']
+    delete f.properties['annotationclassid']
+    delete f.properties['element']
+    delete f.properties['symbolid']
     return f
   },
   unhq_bnda_cty_anno_l05: f => {
@@ -170,6 +213,14 @@ const lut = {
       minzoom: 3,
       maxzoom: 3
     }
+   //if we need to remove features with status 1
+   //if (f.properties.status == 1) {
+   //delete f
+   //} 
+    delete f.properties['zorder']
+    delete f.properties['annotationclassid']
+    delete f.properties['element']
+    delete f.properties['symbolid']
     return f
   },
   unhq_bnda_cty_anno_l06: f => {
@@ -178,14 +229,37 @@ const lut = {
       minzoom: 4,
       maxzoom: 5
     }
+   //if we need to remove features with status 1
+   //if (f.properties.status == 1) {
+   //delete f
+   //} 
+    delete f.properties['zorder']
+    delete f.properties['annotationclassid']
+    delete f.properties['element']
+    delete f.properties['symbolid']
     return f
   },
   unhq_cm02_phyp_anno_l04: f => {
     f.tippecanoe = {
       layer: 'lab_water_m',
-      minzoom: 1,
+      minzoom: 3,
       maxzoom: 3
     }
+  //Ocean minz 1, Bay minz 2, Sea minz3
+  if (f.properties.annotationclassid == 0 || f.properties.annotationclassid == 1) {
+    f.tippecanoe.minzoom = 1
+  } else if (f.properties.annotationclassid == 3) {
+    f.tippecanoe.minzoom = 2
+  } else if (f.properties.annotationclassid == 2 || f.properties.annotationclassid == 4 || f.properties.annotationclassid == 5) {
+    f.tippecanoe.minzoom = 3
+  } else {
+    f.tippecanoe.minzoom = 5
+  } 
+    delete f.properties['zorder']
+    delete f.properties['element']
+  if (f.properties.status == 1) {
+    delete f
+  }
     return f
   },
   unhq_cm02_phyp_anno_l06: f => {
@@ -194,11 +268,19 @@ const lut = {
       minzoom: 4,
       maxzoom: 5
     }
+   if (f.properties.annotationclassid == 6) {
+    f.tippecanoe.minzoom = 5
+  }
+    delete f.properties['zorder']
+    delete f.properties['element']
+  if (f.properties.status == 1) {
+    delete f
+  }
     return f
   },
   unhq_phyp: f => {
     f.tippecanoe = {
-      layer: 'label',
+      layer: 'phyp_label',
       minzoom: 5,
       maxzoom: 5
     }
@@ -208,17 +290,20 @@ if (f.properties.type_code == 4 && !/Sea|Ocean|Gulf/.test(f.properties.name) ){
 f.properties.display = 1
 }
 //edit 2021-01-27 ends
-
     return f
   },
   unhq_popp: f => {
-//    let popp_arr = [1, 2, 3]
-//    if (!popp_arr.includes(f.properties.poptyp_code)) return null
-//    if (f.properties.poptyp_code !== 3 || f.properties.scl_id_code !== 10) return null
     f.tippecanoe = {
       layer: 'un_popp',
       minzoom: 3,
       maxzoom: 5
+    }
+    let popp_arr = [1, 2, 3]
+    if (!popp_arr.includes(f.properties.poptyp_code)) {
+    delete f
+    }
+    if (f.properties.poptyp_code !== 3 || f.properties.scl_id_code !== 10) {
+    delete f
     }
     return f
   } 

@@ -1,4 +1,4 @@
-//modify for un46
+//modify for un large (ZL6-
 const geojsonArea = require('@mapbox/geojson-area')
 
 const preProcess = (f) => {
