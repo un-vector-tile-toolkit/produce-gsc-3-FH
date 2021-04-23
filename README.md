@@ -11,6 +11,7 @@ vi config/default.hjson //edit config info, e.g. host, dbUser, dbPassword, etc.
 ```
 
 ## Possible workflow
+run "work_small.sh" to creat small scale (un and osm sourced) vector tile (update frequency is irregular/ when needed.)  
 run "work_undata.sh" to create un sourced vector tiles (update frequency is irregular/ when needed.)  
 run "work_every.sh" everyday up create/update priority area (daily update).  
 run "work_day0X" once a week to create/update othere areas (weekly update).     
