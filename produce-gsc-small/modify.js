@@ -299,8 +299,10 @@ f.properties.display = 1
       maxzoom: 5
     }
     let popp_arr = [1, 2, 3]
-    if (!popp_arr.includes(f.properties.poptyp_code)) {
-    delete f
+   if (f.properties.cartolb === 'Alofi' ||f.properties.cartolb === 'Avarua' ||f.properties.cartolb === 'Sri Jayewardenepura Kotte' ) {
+     delete f
+    } else if (!popp_arr.includes(f.properties.poptyp_code)) {
+     delete f
     }
     if (f.properties.poptyp_code !== 3 || f.properties.scl_id_code !== 10) {
     delete f

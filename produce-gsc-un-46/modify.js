@@ -85,7 +85,6 @@ const lut = {
     f.properties._source = 'hq'
     delete f.properties['objectid']
     delete f.properties['bdytyp_code']
-
   if (f.properties.bdytyp === 'Administrative boundary 2') {
     f.tippecanoe.minzoom = 7
   } else if (f.properties.bdytyp === 'Administrative boundary 3') {
@@ -186,20 +185,6 @@ const lut = {
   },
 
  //Land Use
-  un_mission_lc_ls: f => {
-    f.tippecanoe = {
-      layer: 'landcover',
-      minzoom: 10,
-      maxzoom: 15
-    }
-  if (f.properties.gridcode == 20 || f.properties.gridcode == 30 || f.properties.gridcode == 80) {
-    delete f.properties['objectid']
-    delete f.properties['landcover']
-  } else {
-    delete f  
-  }
-    return f
-  },
   un_glc30_global_lc_ms: f => {
     f.tippecanoe = {
       layer: 'landcover',
@@ -214,7 +199,20 @@ const lut = {
   }
     return f
   },
-
+  un_mission_lc_ls: f => {
+    f.tippecanoe = {
+      layer: 'landcover',
+      minzoom: 10,
+      maxzoom: 15
+    }
+  if (f.properties.gridcode == 20 || f.properties.gridcode == 30 || f.properties.gridcode == 80) {
+    delete f.properties['objectid']
+    delete f.properties['landcover']
+  } else {
+    delete f  
+  }
+    return f
+  },
  //Places
   un_global_places: f => {
     f.tippecanoe = {
@@ -250,12 +248,10 @@ const lut = {
    return f
   },
 
-
-
 //labels
   unhq_cm02_phyp_anno_l06: f => {
     f.tippecanoe = {
-      layer: 'lab_water_m',
+      layer: 'lab_water',
       minzoom: 6,
       maxzoom: 10
     }
@@ -263,7 +259,7 @@ const lut = {
   },
   unhq_phyp: f => {
     f.tippecanoe = {
-      layer: 'label',
+      layer: 'phyp_label',
       minzoom: 6,
       maxzoom: 15
     }
@@ -273,95 +269,54 @@ if (f.properties.type_code == 4 && !/Sea|Ocean|Gulf/.test(f.properties.name) ){
 f.properties.display = 1
 }
 //edit 2021-01-27 ends
-
     return f
   },
 
- unhq_bnda_a1: f => {
-    f.tippecanoe = {
-      layer: 'hq_bnd',
-      minzoom: 6,
-      maxzoom: 8
-    }
-    return f
-  },
-  unhq_bnda_a2: f => {
-    f.tippecanoe = {
-      layer: 'hq_bnd',
-      minzoom: 9,
-      maxzoom: 15
-    }
-    return f
-  },
  unhq_bnda_a1_p: f => {
     f.tippecanoe = {
-      layer: 'hq_bnd_lab1',
+      layer: 'bnd_lab1',
       minzoom: 6,
       maxzoom: 8
     }
+    f.properties._source = 'hq'
     return f
   },
   unhq_bnda_a2_p: f => {
     f.tippecanoe = {
-      layer: 'hq_bnd_lab2',
+      layer: 'bnd_lab2',
       minzoom: 9,
       maxzoom: 15
     }
-    return f
-  },
-  custom_unmap_0_bnda_a1: f => {
-    f.tippecanoe = {
-      layer: 'c_bnd',
-      minzoom: 6,
-      maxzoom: 8
-    }
-    return f
-  },
-  custom_unmap_0_bnda_a2: f => {
-    f.tippecanoe = {
-      layer: 'c_bnd',
-      minzoom: 9,
-      maxzoom: 15
-    }
+    f.properties._source = 'hq'
     return f
   },
   custom_unmap_0_bnda_a1_p: f => {
     f.tippecanoe = {
-      layer: 'c_bnd_lab1',
+      layer: 'bnd_lab1',
       minzoom: 6,
       maxzoom: 8
     }
+    f.properties._source = 'c'
+    f.properties.adm1nm = f.properties.adm1_name
+    delete f.properties['adm1_name']
     return f
   },
   custom_unmap_0_bnda_a2_p: f => {
     f.tippecanoe = {
-      layer: 'c_bnd_lab2',
+      layer: 'bnd_lab2',
       minzoom: 9,
       maxzoom: 15
     }
-    return f
-  },
-  un_unmik_bnda_a2: f => {
-    f.tippecanoe = {
-      layer: 'mik_bnd',
-      minzoom: 7,
-      maxzoom: 8
-    }
+    f.properties._source = 'c'
+    f.properties.adm2nm = f.properties.adm2_name
+    delete f.properties['adm2_name']
     return f
   },
   un_unmik_bnda_a_p: f => {
     f.tippecanoe = {
       layer: 'mik_bnd_lab2',
-      minzoom: 7,
+      minzoom: 6,
       maxzoom: 8
-    }
-    return f
-  },
-  un_unmik_bnda_a3: f => {
-    f.tippecanoe = {
-      layer: 'mik_bnd',
-      minzoom: 9,
-      maxzoom: 15
     }
     return f
   },
@@ -373,22 +328,6 @@ f.properties.display = 1
     }
     return f
   },
-  un_unmik_bndl: f => {
-    f.tippecanoe = {
-      layer: 'mik_bnd',
-      minzoom: 7,
-      maxzoom: 15
-    }
-    return f
-  },
-  un_unvmc_igac_bnda_a1_departments: f => {
-    f.tippecanoe = {
-      layer: 'vmc_bnd',
-      minzoom: 7,
-      maxzoom: 8
-    }
-    return f
-  },
   un_unvmc_igac_bnda_a1_departments_p: f => {
     f.tippecanoe = {
       layer: 'vmc_bnd_lab1',
@@ -397,27 +336,11 @@ f.properties.display = 1
     }
     return f
   },
-  un_unvmc_igac_bnda_a2_municipalities: f => {
-    f.tippecanoe = {
-      layer: 'vmc_bnd',
-      minzoom: 9,
-      maxzoom: 10
-    }
-    return f
-  },
   un_unvmc_igac_bnda_a2_municipalities_p: f => {
     f.tippecanoe = {
       layer: 'vmc_bnd_lab2',
       minzoom: 9,
       maxzoom: 10
-    }
-    return f
-  },
-  un_unvmc_igac_bnda_a3_rural_units: f => {
-    f.tippecanoe = {
-      layer: 'vmc_bnd',
-      minzoom: 11,
-      maxzoom: 15
     }
     return f
   },
@@ -431,7 +354,7 @@ f.properties.display = 1
   },
   unhq_bnda05_cty: f => {
     f.tippecanoe = {
-      layer: 'bnd_cty',
+      layer: 'bnda_cty',
       minzoom: 6,
       maxzoom: 11
     }
@@ -445,28 +368,6 @@ f.properties.display = 1
     }
     return f
   },
-
-
-
-  // 2. water
-  custom_planet_ocean_l08: f => {
-    f.tippecanoe = {
-      layer: 'ocean',
-      minzoom: 6,
-      maxzoom: 7
-    }
-    return f
-  },
-  custom_planet_ocean: f => {
-    f.tippecanoe = {
-      layer: 'ocean',
-      minzoom: 8,
-      maxzoom: 15
-    } 
-    return f
-  },
-
-
   // 9. POIs
   un_minusca_pois: f => {
     f.tippecanoe = {
