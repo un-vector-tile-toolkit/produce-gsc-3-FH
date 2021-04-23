@@ -3,18 +3,18 @@ un-s: {
   Z: 0
   relations: [
    un_base::public::custom_planet_land_a_l08
+   un_base::public::un_glc30_global_lc_ss
    un_base::public::unhq_bndl
    un_base::public::unhq_bndl05
    un_base::public::unhq_bndl25
    un_base::public::custom_ne_rivers_lakecentrelines
-   un_base::public::unhq_phyp
    un_base::public::unhq_bnda_cty_anno_l03
    un_base::public::unhq_bnda_cty_anno_l04
    un_base::public::unhq_bnda_cty_anno_l05
    un_base::public::unhq_bnda_cty_anno_l06
    un_base::public::unhq_cm02_phyp_anno_l04
    un_base::public::unhq_cm02_phyp_anno_l06
-   un_base::public::un_glc30_global_lc_ss
+   un_base::public::unhq_phyp
    un_base::public::unhq_popp
    ]
   mbtilesDir: produce-gsc-small/un-s-tile

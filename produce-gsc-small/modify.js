@@ -83,8 +83,6 @@ const lut = {
       minzoom: 0,
       maxzoom: 5
     }
-    delete f.properties['objectid']
-    delete f.properties['fid_1']
     return f
   },
   un_glc30_global_lc_ss: f => {
@@ -156,7 +154,7 @@ const lut = {
     f.tippecanoe = {
       layer: 'lab_cty',
       minzoom: 4,
-      maxzoom: 4
+      maxzoom: 5
     }
     return f
   },
@@ -174,6 +172,21 @@ const lut = {
       minzoom: 4,
       maxzoom: 5
     }
+    return f
+  },
+  unhq_phyp: f => {
+    f.tippecanoe = {
+      layer: 'label',
+      minzoom: 5,
+      maxzoom: 5
+    }
+//edit 2021-01-27 starts
+f.properties.display = 0
+if (f.properties.type_code == 4 && !/Sea|Ocean|Gulf/.test(f.properties.name) ){
+f.properties.display = 1
+}
+//edit 2021-01-27 ends
+
     return f
   },
   unhq_popp: f => {
