@@ -271,7 +271,7 @@ const queueTasks = () => {
 // shutdown this system
 const shutdown = () => {
   winston.info(`${iso()}: production system shutdown.`)
-  console.log('** production system shutdown! **')
+  console.log('** production system for osm-s shutdown! **')
   process.exit(0)
 }
 
