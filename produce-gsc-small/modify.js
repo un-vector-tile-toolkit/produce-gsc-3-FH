@@ -34,10 +34,13 @@ const preProcess = (f) => {
 }
 
 const postProcess = (f) => {
+if(f!==null){
   delete f.properties['_database']
   delete f.properties['_table']
+}
   return f
 }
+
 
 const flap = (f, defaultZ) => {
   switch (f.geometry.type) {
@@ -94,9 +97,10 @@ const lut = {
     delete f.properties['ungsc_mission']
     let rd_arr = [1, 3, 5, 7]
     if (!rd_arr.includes(f.properties.z_order)) {
-    delete f
-    }
+    return null
+    } else {
     return f
+    }
   },
  // un1 Base
   custom_planet_land_a_l08: f => {
@@ -127,9 +131,10 @@ const lut = {
     delete f.properties['objectid']
   //no need admin 1 and 2 for ZL5 
   if (f.properties.bdytyp === 'Administrative boundary 1' ||f.properties.bdytyp === 'Administrative boundary 2') {
-    delete f
-  }
+    return null
+  } else {
     return f
+  }
   },
   unhq_bndl05: f => {
     f.tippecanoe = {
@@ -140,9 +145,10 @@ const lut = {
     delete f.properties['objectid']
   //no need admin 1 and 2 for small scale
   if (f.properties.bdytyp === 'Administrative boundary 1' || f.properties.bdytyp === 'Administrative boundary 2') {
-    delete f
-  }
+    return null
+  } else {
     return f
+  }
   },
    unhq_bndl25: f => {
     f.tippecanoe = {
@@ -153,9 +159,10 @@ const lut = {
     delete f.properties['objectid']
   //no need admin 1 and 2 for small scale
   if (f.properties.bdytyp === 'Administrative boundary 1' || f.properties.bdytyp === 'Administrative boundary 2') {
-    delete f
-  }
+    return null
+  } else {
     return f
+  }
   },
   custom_ne_rivers_lakecentrelines: f => {
     f.tippecanoe = {
@@ -258,9 +265,10 @@ const lut = {
     delete f.properties['zorder']
     delete f.properties['element']
   if (f.properties.status == 1) {
-    delete f
-  }
+    return null
+  } else {
     return f
+  }
   },
   unhq_cm02_phyp_anno_l06: f => {
     f.tippecanoe = {
@@ -274,9 +282,10 @@ const lut = {
     delete f.properties['zorder']
     delete f.properties['element']
   if (f.properties.status == 1) {
-    delete f
-  }
+    return null
+  } else {
     return f
+  }
   },
   unhq_phyp: f => {
     f.tippecanoe = {
@@ -300,12 +309,12 @@ f.properties.display = 1
     }
     let popp_arr = [1, 2, 3]
    if (f.properties.cartolb === 'Alofi' ||f.properties.cartolb === 'Avarua' ||f.properties.cartolb === 'Sri Jayewardenepura Kotte' ) {
-     delete f
+     f = null
     } else if (!popp_arr.includes(f.properties.poptyp_code)) {
-     delete f
+     f = null
     }
     if (f.properties.poptyp_code !== 3 || f.properties.scl_id_code !== 10) {
-    delete f
+     f = null
     }
     return f
   } 

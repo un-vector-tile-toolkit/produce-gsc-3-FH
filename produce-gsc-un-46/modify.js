@@ -34,10 +34,13 @@ const preProcess = (f) => {
 }
 
 const postProcess = (f) => {
+if(f!==null){
   delete f.properties['_database']
   delete f.properties['_table']
+}
   return f
 }
+
 
 const flap = (f, defaultZ) => {
   switch (f.geometry.type) {
@@ -99,10 +102,11 @@ const lut = {
   } else {
     f.tippecanoe.minzoom = 6
   }
-  if (f.properties.iso3cd === 'COL' || f.properties.iso3cd === 'COL_ECU' || f.properties.iso3cd === 'COL_PER' || f.properties.iso3cd === 'COL_VEN' || f.properties.iso3cd === 'BRA_COL' || f.properties.iso3cd === 'COL_PAN') {
-    delete f
-  }
+  if (f.properties.iso3cd == 'COL' || f.properties.iso3cd == 'COL_ECU' || f.properties.iso3cd == 'COL_PER' || f.properties.iso3cd == 'COL_VEN' || f.properties.iso3cd == 'BRA_COL' || f.properties.iso3cd == 'COL_PAN') {
+    return null
+  } else {
     return f
+  }
   },
   custom_unmap_0_bndl: f => {
     f.tippecanoe = {
@@ -156,7 +160,7 @@ const lut = {
   },
   un_unvmc_igac_bndl: f => {
     f.tippecanoe = {
-      layer: 'vmc_bnd',
+      layer: 'bndl',
       maxzoom: 15
     }
     f.properties._source = 'vmc'
@@ -201,10 +205,10 @@ const lut = {
   if (f.properties.gridcode == 20 || f.properties.gridcode == 30 || f.properties.gridcode == 80) {
     delete f.properties['id']
     delete f.properties['objectid']
-  } else {
-    delete f  
-  }
     return f
+  } else {
+    return null 
+  }
   },
   un_mission_lc_ls: f => {
     f.tippecanoe = {
@@ -215,10 +219,10 @@ const lut = {
   if (f.properties.gridcode == 20 || f.properties.gridcode == 30 || f.properties.gridcode == 80) {
     delete f.properties['objectid']
     delete f.properties['landcover']
-  } else {
-    delete f  
-  }
     return f
+  } else {
+    return null  
+  }
   },
  //Places
   un_global_places: f => {
@@ -250,7 +254,7 @@ const lut = {
   } else if (f.properties.poptyp_code == 3 && f.properties.scl_id_code == 10) {
     f.tippecanoe.minzoom = 6
   } else {
-    delete f
+    f = null
   } 
    return f
   },
