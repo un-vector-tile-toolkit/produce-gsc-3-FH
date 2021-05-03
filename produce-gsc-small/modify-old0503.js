@@ -310,13 +310,14 @@ f.properties.display = 1
     let popp_arr = [1, 2, 3]
    if (f.properties.cartolb === 'Alofi' ||f.properties.cartolb === 'Avarua' ||f.properties.cartolb === 'Sri Jayewardenepura Kotte' ) {
      return null
-    } else if (f.properties.poptyp_code == 1 || f.properties.poptyp_code == 2) {
-     return f
-    } else if (f.properties.poptyp_code == 3 && f.properties.scl_id_code == 10) {
-     return f
-    } else {
+    } else if (!popp_arr.includes(f.properties.poptyp_code)) {
      return null
-    } 
+    }
+    if (f.properties.poptyp_code !== 3 || f.properties.scl_id_code !== 10) {
+     return null
+    } else {
+    return f
+    }
   } 
 }
 module.exports = (f) => {
