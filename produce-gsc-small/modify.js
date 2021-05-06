@@ -248,7 +248,7 @@ const lut = {
   },
   unhq_cm02_phyp_anno_l04: f => {
     f.tippecanoe = {
-      layer: 'lab_water_m',
+      layer: 'lab_water',
       minzoom: 3,
       maxzoom: 3
     }
@@ -272,7 +272,7 @@ const lut = {
   },
   unhq_cm02_phyp_anno_l06: f => {
     f.tippecanoe = {
-      layer: 'lab_water_m',
+      layer: 'lab_water',
       minzoom: 4,
       maxzoom: 5
     }
