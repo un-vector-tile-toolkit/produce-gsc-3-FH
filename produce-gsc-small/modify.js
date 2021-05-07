@@ -95,11 +95,16 @@ const lut = {
     delete f.properties['tracktype']
     delete f.properties['ungsc_ctry']
     delete f.properties['ungsc_mission']
-    let rd_arr = [1, 3, 5, 7]
-    if (!rd_arr.includes(f.properties.z_order)) {
-    return null
-    } else {
+//    let rd_arr = [1, 3, 5, 7]
+//    if (!rd_arr.includes(f.properties.z_order)) {
+//    return null
+//    } else {
+//    return f
+//    }
+    if (f.properties.z_order == 1 || f.properties.z_order == 3 || f.properties.z_order == 5 || f.properties.z_order == 7){
     return f
+    } else {
+    return null
     }
   },
  // un1 Base
@@ -307,7 +312,7 @@ f.properties.display = 1
       minzoom: 3,
       maxzoom: 5
     }
-    let popp_arr = [1, 2, 3]
+//    let popp_arr = [1, 2, 3]
    if (f.properties.cartolb === 'Alofi' ||f.properties.cartolb === 'Avarua' ||f.properties.cartolb === 'Sri Jayewardenepura Kotte' ) {
      return null
     } else if (f.properties.poptyp_code == 1 || f.properties.poptyp_code == 2) {
